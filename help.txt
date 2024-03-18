@@ -1,0 +1,40 @@
+Condition:
+    OR
+
+
+
+Order:
+    FirstIsHCS
+    Unspecified
+
+
+Decision:
+    Null
+
+
+
+
+Rule:
+    PropertyInList
+    PropertyNotInList
+
+
+Template:
+  {
+    "Name": "HCS connection",
+    "Order": "FirstIsHCS",
+    "Decision": {
+      "Condition": "OR",
+      "Criteria": [
+        {
+          "Rule": "PropertyInList",
+          "Part1": [{"Property1": "profile"},{"List1": "hcs"}]
+        },
+        {
+          "Rule": "PropertyInList",
+          "Part2": [{"Property2": "profile"},{"List2": "hcs"}]
+        }
+      ]
+    },
+    "Subclass": []
+  }

@@ -1,0 +1,560 @@
+[
+  {
+    "Name": "HCS connection",
+    "Order": "FirstIsHCS",
+    "Decision": {
+      "Condition": "OR",
+      "Criteria": [
+        {
+          "Rule": "PropertyInList",
+          "Part": "part1",
+          "Property": "profile",
+          "List": "hcs_profiles"
+        },
+        {
+          "Rule": "PropertyInList",
+          "Part": "part2",
+          "Property": "profile",
+          "List": "hcs_profiles"
+        }
+      ]
+    },
+    "Subclass": [
+      {
+        "Name": "Two HCS",
+        "Order": "Unspecified",
+        "Decision": {
+          "Condition": "AND",
+          "Criteria": [
+            {
+              "Rule": "PropertyInList",
+              "Part": "part2",
+              "Property": "profile",
+              "List": "hcs_profiles"
+            }
+          ]
+        },
+        "Subclass": [
+          {
+            "Name": "Side",
+            "Order": "Unspecified",
+            "Decision": {
+              "Condition": "AND",
+              "Criteria": [
+                {
+                  "Rule": "ValueNumericCheck",
+                  "Part": "connection",
+                  "Property": "plane1_x_overlap",
+                  "Condition": ">",
+                  "Value": 50
+                }
+              ]
+            },
+            "Subclass": [
+              {
+                "Name": "HCS Side Gap",
+                "Order": "Unspecified",
+                "Decision": {
+                  "Condition": "OR",
+                  "Criteria": [
+                    {
+                      "Rule": "PropertySet",
+                      "Part": ["connection"],
+                      "Property": ["plane1_y_overlap"],
+                      "Name": "HCS Side Gap 1"
+                    }
+                  ]
+                },
+                "Subclass": []
+              }
+            ]
+          },
+          {
+            "Name": "Front",
+            "Order": "Unspecified",
+            "Decision": "Null",
+            "Subclass": [
+              {
+                "Name": "Ideal full overlap",
+                "Order": "Unspecified",
+                "Decision": {
+                  "Condition": "AND",
+                  "Criteria": [
+                    {
+                      "Rule": "TwoPropertyCheck",
+                      "Part": "part1",
+                      "Part2": "connection",
+                      "Property": "width",
+                      "Property2": "plane1_y_overlap",
+                      "Condition": "=="
+                    },
+                    {
+                      "Rule": "TwoPropertyCheck",
+                      "Part": "part2",
+                      "Part2": "connection",
+                      "Property": "width",
+                      "Property2": "plane1_y_overlap",
+                      "Condition": "=="
+                    }
+                  ]
+                }
+              },
+              {
+                "Name": "Not ideal overlap",
+                "Order": "Unspecified",
+                "Decision": "Null",
+                "Subclass": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "HCS - Wall",
+        "Order": "Unspecified",
+        "Decision": {
+          "Condition": "OR",
+          "Criteria": [
+            {
+              "Rule": "ValueNumericCheck",
+              "Part": "part2",
+              "Property": "tekla_class",
+              "Condition": "==",
+              "Value": "1"
+            },
+            {
+              "Rule": "ValueNumericCheck",
+              "Part": "part2",
+              "Property": "tekla_class",
+              "Condition": "==",
+              "Value": "8"
+            }
+          ]
+        },
+        "Subclass": [
+          {
+            "Name": "No connection",
+            "Order": "Unspecified",
+            "Decision": {
+              "Condition": "AND",
+              "Criteria": [
+                {
+                  "Rule": "ValueNumericCheck",
+                  "Part": "connection",
+                  "Property": "plane1_z_overlap",
+                  "Condition": "<",
+                  "Value": "0"
+                },
+                {
+                  "Rule": "TwoPropertyCheck",
+                  "Part": "part1",
+                  "Part2": "part2",
+                  "Property": "cog_z",
+                  "Property2": "cog_z",
+                  "Condition": "<"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "Name": "One HCS",
+        "Order": "Unspecified",
+        "Decision": {
+          "Condition": "AND",
+          "Criteria": [
+            {
+              "Rule": "ValueNumericCheck",
+              "Part": "connection",
+              "Property": "plane1_y_overlap",
+              "Condition": ">",
+              "Value": 0
+            }
+          ]
+        },
+        "Subclass": [
+          {
+            "Name": "Full width support",
+            "Order": "Unspecified",
+            "Decision": {
+              "Condition": "AND",
+              "Criteria": [
+                {
+                  "Rule": "TwoPropertyCheck",
+                  "Part": "part1",
+                  "Part2": "connection",
+                  "Property": "width",
+                  "Property2": "plane1_y_overlap",
+                  "Condition": "=="
+                }
+              ]
+            },
+            "Subclass": [
+              {
+            "Name": "Full width support 1",
+            "Order": "Unspecified",
+            "Decision": {
+              "Condition": "AND",
+              "Criteria": [
+                {
+                  "Rule": "ValueNumericCheck",
+                  "Part": "connection",
+                  "Property": "part1_endpoint_distance",
+                  "Condition": ">",
+                  "Value": 500
+                }
+              ]
+            },
+            "Subclass": [
+              {
+                "Name": "HCS Full Width properties",
+                "Order": "Unspecified",
+                "Decision": {
+                  "Condition": "OR",
+                  "Criteria": [
+                    {
+                      "Rule": "PropertySet",
+                      "Part": ["connection","part1"],
+                      "Property": ["plane2_y_overlap","profile"],
+                      "Name": "HCS Front Overlap 2"
+                    }
+                  ]
+                },
+                "Subclass": []
+              }
+            ]
+          },
+              {
+            "Name": "Steel beam supported 1",
+            "Order": "Unspecified",
+            "Decision": {
+              "Condition": "AND",
+              "Criteria": [
+                {
+                  "Rule": "PropertyInList",
+                  "Part": "part2",
+                  "Property": "material",
+                  "List": "steel material"
+                },
+                {
+                  "Rule": "ValueNumericCheck",
+                  "Part": "connection",
+                  "Property": "angle_XX",
+                  "Condition": "==",
+                  "Value": "90"
+                }
+              ]
+            },
+            "Subclass": [
+              {
+                "Name": "Support length",
+                "Order": "Unspecified",
+                "Decision": {
+                  "Condition": "AND",
+                  "Criteria": [
+                    {
+                      "Rule": "PropertySet",
+                      "Part": ["connection"],
+                      "Property": ["plane1_x_overlap"],
+                      "Name": "Support Length 2"
+                    }
+                  ]
+                },
+                "Subclass": []
+              }
+            ]
+          },
+              {
+            "Name": "Concrete beam 1",
+            "Order": "Unspecified",
+            "Decision": {
+              "Condition": "AND",
+              "Criteria": [
+                {
+                  "Rule": "PropertyInList",
+                  "Part": "part2",
+                  "Property": "material",
+                  "List": "concrete material"
+                }
+              ]
+            },
+            "Subclass": [
+              {
+                "Name": "Support length",
+                "Order": "Unspecified",
+                "Decision": {
+                  "Condition": "AND",
+                  "Criteria": [
+                    {
+                      "Rule": "PropertySet",
+                      "Part": ["connection"],
+                      "Property": ["plane1_x_overlap"],
+                      "Name": "Support Length 1"
+                    }
+                  ]
+                },
+                "Subclass": []
+              }
+            ]
+          }
+            ]
+          },
+          {
+            "Name": "Support not full width of HCS",
+            "Order": "Unspecified",
+            "Decision": "Null",
+            "Subclass": [
+              {
+            "Name": "Beam at side of HCS 2",
+            "Order": "Unspecified",
+            "Decision": {
+              "Condition": "AND",
+              "Criteria": [
+                {
+                  "Rule": "ValueNumericCheck",
+                  "Part": "connection",
+                  "Property": "part1_endpoint_distance",
+                  "Condition": ">",
+                  "Value": 500
+                }
+              ]
+            }
+          },
+              {
+            "Name": "Steel beam supported 2",
+            "Order": "Unspecified",
+            "Decision": {
+              "Condition": "AND",
+              "Criteria": [
+                {
+                  "Rule": "PropertyInList",
+                  "Part": "part2",
+                  "Property": "material",
+                  "List": "steel material"
+                },
+                {
+                  "Rule": "ValueNumericCheck",
+                  "Part": "connection",
+                  "Property": "angle_XX",
+                  "Condition": "==",
+                  "Value": "90"
+                }
+              ]
+            },
+            "Subclass": [
+              {
+                "Name": "Support length 2",
+                "Order": "Unspecified",
+                "Decision": {
+                  "Condition": "AND",
+                  "Criteria": [
+                    {
+                      "Rule": "PropertySet",
+                      "Part": ["connection"],
+                      "Property": ["plane1_x_overlap"],
+                      "Name": "Support Length 3"
+                    }
+                  ]
+                },
+                "Subclass": []
+              }
+            ]
+          },
+              {
+            "Name": "Concrete beam 2",
+            "Order": "Unspecified",
+            "Decision": {
+              "Condition": "AND",
+              "Criteria": [
+                {
+                  "Rule": "PropertyInList",
+                  "Part": "part2",
+                  "Property": "material",
+                  "List": "concrete material"
+                }
+              ]
+            },
+            "Subclass": [
+              {
+                "Name": "Support length 4",
+                "Order": "Unspecified",
+                "Decision": {
+                  "Condition": "AND",
+                  "Criteria": [
+                    {
+                      "Rule": "PropertySet",
+                      "Part": ["connection"],
+                      "Property": ["plane1_x_overlap"],
+                      "Name": "Support Length 5"
+                    }
+                  ]
+                },
+                "Subclass": []
+              }
+            ]
+          }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "Not connection 2",
+        "Order": "Unspecified",
+        "Decision": "Null"
+      }
+    ]
+  },
+
+  {
+    "Name": "One Layer Wall Connections",
+    "Order": "Unspecified",
+    "Decision": {
+      "Condition": "AND",
+      "Criteria": [
+        {
+          "Rule": "ValueNumericCheck",
+          "Part": "part1",
+          "Property": "tekla_class",
+          "Condition": "==",
+          "Value": "1"
+        },
+        {
+          "Rule": "ValueNumericCheck",
+          "Part": "part2",
+          "Property": "tekla_class",
+          "Condition": "==",
+          "Value": "1"
+        }
+      ]
+    },
+    "Subclass": [
+      {
+        "Name": "Vertical",
+        "Order": "Unspecified",
+        "Decision": {
+          "Condition": "OR",
+          "Criteria": [
+            {
+              "Rule": "ValueNumericCheck",
+              "Part": "connection",
+              "Property": "plane1_z_overlap",
+              "Condition": ">",
+              "Value": "500"
+            }
+          ]
+        },
+        "Subclass": [
+          {
+            "Name": "Straight",
+            "Order": "Unspecified",
+            "Decision": {
+              "Condition": "OR",
+              "Criteria": [
+                {
+                  "Rule": "ValueNumericCheck",
+                  "Part": "connection",
+                  "Property": "angle_XX",
+                  "Condition": "==",
+                  "Value": "0"
+                },
+                {
+                  "Rule": "ValueNumericCheck",
+                  "Part": "connection",
+                  "Property": "angle_XX",
+                  "Condition": "==",
+                  "Value": "180"
+                }
+              ]
+            },
+            "Subclass": [
+              {
+                "Name": "Corbel",
+                "Order": "Unspecified",
+                "Decision": {
+                  "Condition": "OR",
+                  "Criteria": [
+                    {
+                      "Rule": "ValueNumericCheck",
+                      "Part": "connection",
+                      "Property": "plane1_x_overlap",
+                      "Condition": ">",
+                      "Value": "150"
+                    }
+                  ]
+                }
+              },
+              {
+                "Name": "Normal",
+                "Order": "Unspecified",
+                "Decision": "Null",
+                "Subclass": [
+                  {
+                    "Name": "Gap 1",
+                    "Order": "Unspecified",
+                    "Decision": {
+                      "Condition": "AND",
+                      "Criteria": [
+                        {
+                          "Rule": "PropertySet",
+                          "Part": ["connection"],
+                          "Property": ["plane1_x_overlap"],
+                          "Name": "Gap 1"
+                        }
+                      ]
+                    }
+                  }
+                  ]
+              }
+            ]
+
+          },
+          {
+            "Name": "Corner",
+            "Order": "Unspecified",
+            "Decision": {
+              "Condition": "OR",
+              "Criteria": [
+                {
+                  "Rule": "ValueNumericCheck",
+                  "Part": "connection",
+                  "Property": "angle_XX",
+                  "Condition": "==",
+                  "Value": "90"
+                }
+              ]
+            }
+          },
+          {
+            "Name": "Other",
+            "Order": "Unspecified",
+            "Decision": "Null"
+          }
+        ]
+      },
+      {
+        "Name": "Horizontal",
+        "Order": "Unspecified",
+        "Decision": {
+          "Condition": "OR",
+          "Criteria": [
+            {
+              "Rule": "ValueNumericCheck",
+              "Part": "connection",
+              "Property": "plane1_x_overlap",
+              "Condition": ">",
+              "Value": "500"
+            }
+          ]
+        }
+      }
+    ]
+  },
+
+
+  {
+    "Name": "Unclassified",
+    "Order": "Unspecified",
+    "Decision": "Null"
+  }
+]

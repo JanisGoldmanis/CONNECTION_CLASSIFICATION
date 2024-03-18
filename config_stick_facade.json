@@ -1,0 +1,311 @@
+[
+  {
+    "Name": "Aluminium connection",
+    "Order": "Unspecified",
+    "Decision": {
+      "Condition": "AND",
+      "Criteria": [
+        {
+          "Rule": "PropertyInList",
+          "Part": "part1",
+          "Property": "material",
+          "List": "aluminium material"
+        },
+        {
+          "Rule": "PropertyInList",
+          "Part": "part2",
+          "Property": "material",
+          "List": "aluminium material"
+        }
+      ]
+    },
+    "Subclass": [
+      {
+        "Name": "H-H",
+        "Order": "ClosestEndPointFirst",
+        "Decision": {
+          "Condition": "AND",
+          "Criteria": [
+            {
+              "Rule": "PartIsHorizontal",
+              "Part": "part1"
+            },
+            {
+              "Rule": "PartIsHorizontal",
+              "Part": "part2"
+            }
+          ]
+        },
+        "Subclass": [
+          {
+            "Name": "Straight",
+            "Order": "Unspecified",
+            "Decision": {
+              "Condition": "OR",
+              "Criteria": [
+                {
+                  "Rule": "ValueNumericCheck",
+                  "Part": "connection",
+                  "Property": "angle_XX",
+                  "Condition": "==",
+                  "Value": 0
+                },
+                {
+                  "Rule": "ValueNumericCheck",
+                  "Part": "connection",
+                  "Property": "angle_XX",
+                  "Condition": "==",
+                  "Value": 180
+                }
+              ]
+            },
+            "Subclass": [
+              {
+                "Name": "Profile",
+                "Order": "ClosestEndPointFirst",
+                "Decision": {
+                  "Condition": "OR",
+                  "Criteria": [
+                    {
+                      "Rule": "PropertySet",
+                      "Part": ["part1", "part2", "connection", "connection"],
+                      "Property": ["profile", "profile", "angle_XX", "plane1_z_start"],
+                      "Name": "Part1 Profile"
+                    }
+                  ]
+                },
+                "Subclass": []
+              }
+            ]
+          },
+          {
+            "Name": "Exact Corner",
+            "Order": "Unspecified",
+            "Decision": {
+              "Condition": "OR",
+              "Criteria": [
+                {
+                  "Rule": "ValueNumericCheck",
+                  "Part": "connection",
+                  "Property": "angle_XX",
+                  "Condition": "==",
+                  "Value": 90
+                }
+              ]
+            },
+            "Subclass": [
+              {
+                "Name": "Profile",
+                "Order": "ClosestEndPointFirst",
+                "Decision": {
+                  "Condition": "OR",
+                  "Criteria": [
+                    {
+                      "Rule": "PropertySet",
+                      "Part": ["part1", "part2", "connection", "connection"],
+                      "Property": ["profile", "profile", "angle_XX", "plane1_z_start"],
+                      "Name": "Part1 Profile"
+                    }
+                  ]
+                },
+                "Subclass": []
+              }
+            ]
+          },
+          {
+            "Name": "Other Angle",
+            "Order": "Unspecified",
+            "Decision": "Null",
+            "Subclass": [
+              {
+                "Name": "Profile",
+                "Order": "ClosestEndPointFirst",
+                "Decision": {
+                  "Condition": "OR",
+                  "Criteria": [
+                    {
+                      "Rule": "PropertySet",
+                      "Part": ["part1", "part2", "connection", "connection"],
+                      "Property": ["profile", "profile", "angle_XX", "plane1_z_start"],
+                      "Name": "Part1 Profile"
+                    }
+                  ]
+                },
+                "Subclass": []
+              }
+            ]
+
+          }
+
+        ]
+      },
+      {
+        "Name": "V-V",
+        "Order": "Unspecified",
+        "Decision": {
+          "Condition": "AND",
+          "Criteria": [
+            {
+              "Rule": "PartIsVertical",
+              "Part": "part1"
+            },
+            {
+              "Rule": "PartIsVertical",
+              "Part": "part2"
+            }
+          ]
+        },
+        "Subclass": [
+          {
+            "Name": "Profile",
+            "Order": "BottomFirst",
+            "Decision": {
+              "Condition": "OR",
+              "Criteria": [
+                {
+                  "Rule": "PropertySet",
+                  "Part": ["part1", "part2", "connection", "connection"],
+                  "Property": ["profile", "profile", "plane2_y_start", "plane2_z_start"],
+                  "Name": "Part1 Profile"
+                }
+              ]
+            },
+            "Subclass": []
+          }
+        ]
+      },
+      {
+        "Name": "T",
+        "Order": "FirstIsVertical",
+        "Decision": {
+          "Condition": "AND",
+          "Criteria": [
+            {
+              "Rule": "PartIsVertical",
+              "Part": "part1"
+            },
+            {
+              "Rule": "PartIsHorizontal",
+              "Part": "part2"
+            }
+          ]
+        },
+        "Subclass": [
+          {
+            "Name": "V-H",
+            "Order": "Unspecified",
+            "Decision": {
+              "Condition": "AND",
+              "Criteria": [
+                {
+                  "Rule": "ValueNumericCheck",
+                  "Part": "connection",
+                  "Property": "plane2_x_start",
+                  "Condition": ">",
+                  "Value": 100
+                },
+                {
+                  "Rule": "ValueNumericCheck",
+                  "Part": "connection",
+                  "Property": "plane2_x_end",
+                  "Condition": ">",
+                  "Value": 100
+                }
+              ]
+            }
+          },
+          {
+            "Name": "H-V",
+            "Order": "Unspecified",
+            "Decision": {
+              "Condition": "AND",
+              "Criteria": [
+                {
+                  "Rule": "ValueNumericCheck",
+                  "Part": "connection",
+                  "Property": "plane1_x_start",
+                  "Condition": ">=",
+                  "Value": 100
+                },
+                {
+                  "Rule": "ValueNumericCheck",
+                  "Part": "connection",
+                  "Property": "plane1_x_end",
+                  "Condition": ">=",
+                  "Value": 100
+                }
+              ]
+            },
+            "Subclass": [
+              {
+                "Name": "Profile",
+                "Order": "BottomFirst",
+                "Decision": {
+                  "Condition": "OR",
+                  "Criteria": [
+                    {
+                      "Rule": "PropertySet",
+                      "Part": ["part1", "part2"],
+                      "Property": ["profile", "profile"],
+                      "Name": "Part1 Profile"
+                    }
+                  ]
+                },
+                "Subclass": []
+              }
+            ]
+          },
+          {
+            "Name": "Top corner",
+            "Order": "Unspecified",
+            "Decision": {
+              "Condition": "AND",
+              "Criteria": [
+                {
+                  "Rule": "ValueNumericCheck",
+                  "Part": "connection",
+                  "Property": "global_z_bottom",
+                  "Condition": ">=",
+                  "Value": 100
+                }
+              ]
+            }
+          },
+                    {
+            "Name": "Bottom Corner",
+            "Order": "Unspecified",
+            "Decision": {
+              "Condition": "AND",
+              "Criteria": [
+                {
+                  "Rule": "ValueNumericCheck",
+                  "Part": "connection",
+                  "Property": "global_z_top",
+                  "Condition": ">=",
+                  "Value": 100
+                }
+              ]
+            }
+          },
+          {
+            "Name": "Unclassified",
+            "Order": "Unspecified",
+            "Decision": "Null"
+          }
+        ]
+      },
+      {
+        "Name": "Unclassified",
+        "Order": "Unspecified",
+        "Decision": "Null"
+      }
+    ]
+  },
+
+
+  {
+    "Name": "Unclassified",
+    "Order": "Unspecified",
+    "Decision": "Null"
+  }
+]

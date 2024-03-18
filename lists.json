@@ -1,0 +1,30 @@
+{
+  "lists": [
+    {
+      "hcs_profiles": [
+        "UPB200(200X1200)",
+        "UPB265(265X1200)",
+        "UPB320(320X1200)",
+        "UPB380(380X1200)",
+        "UPB400(400X1200)"
+      ]
+    },
+    {
+      "steel material": [
+        "S355J2",
+        "S355J2 NM"
+      ]
+    },
+    {
+      "aluminium material": [
+        "ALUMINIUM"
+      ]
+    },
+    {
+      "concrete material": [
+        "C45/55",
+        "C50/60"
+      ]
+    }
+  ]
+}
